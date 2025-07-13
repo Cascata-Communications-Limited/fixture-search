@@ -2,6 +2,10 @@
 
 A self-contained React component that integrates with the Fixture Manager Search API, enabling sports fixture lookup by team or competition across supported sports.
 
+![Version](https://img.shields.io/npm/v/@your-scope/fixture-manager-search-component.svg)
+![License](https://img.shields.io/npm/l/@your-scope/fixture-manager-search-component.svg)
+![Build](https://img.shields.io/github/actions/workflow/status/your-org/fixture-manager-search-component/main.yml)
+
 ## Features
 
 - 🔍 Dropdown-based search for teams, competitions, or sports
@@ -40,3 +44,4 @@ This component is built using Vite and plain JavaScript for rapid prototyping. T
 
 ## License
 MIT
+

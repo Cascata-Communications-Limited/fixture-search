@@ -1,0 +1,21 @@
+
+---
+
+### 🧹 `.npmignore`
+
+```text
+# Ignore dev and build artifacts
+.vscode/
+node_modules/
+tests/
+__tests__/
+coverage/
+.env
+*.log
+
+# Ignore source files if publishing only built output
+src/
+*.config.js
+*.config.ts
+*.test.js
+*.test.ts

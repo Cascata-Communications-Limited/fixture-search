@@ -40,4 +40,3 @@ This component is built using Vite and plain JavaScript for rapid prototyping. T
 
 ## License
 MIT
-

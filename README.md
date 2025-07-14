@@ -1,47 +1,12 @@
-# Fixture Manager Search Component
+# React + Vite
 
-A self-contained React component that integrates with the Fixture Manager Search API, enabling sports fixture lookup by team or competition across supported sports.
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-![Version](https://img.shields.io/npm/v/@your-scope/fixture-manager-search-component.svg)
-![License](https://img.shields.io/npm/l/@your-scope/fixture-manager-search-component.svg)
-![Build](https://img.shields.io/github/actions/workflow/status/your-org/fixture-manager-search-component/main.yml)
+Currently, two official plugins are available:
 
-## Features
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-- 🔍 Dropdown-based search for teams, competitions, or sports
-- 🎨 Customizable layout with sport icon, background color, and strapline
-- 🧩 Optional "Powered by" branding slot for distributable use
-- ⚙️ Designed for reuse across React and Blazor applications
+## Expanding the ESLint configuration
 
-## Installation
-```bash
-npm install @your-scope/fixture-manager-search-component
-
-## Usage
-
-import FixtureSearch from '@your-scope/fixture-manager-search-component';
-
-<FixtureSearch
-  sport="football"
-  backgroundColor="#004080"
-  iconPath="/icons/football.svg"
-  header="Find Fixtures"
-  strapline="Search by team or competition"
-/>
-
-## Props
-
-| Prop | Type | Description | 
-| sport | string | Sport identifier used for icon and filtering | 
-| backgroundColor | string | Hex code for graphic pane background | 
-| iconPath | string | Path to sport icon image | 
-| header | string | Header text for the control pane | 
-| strapline | string | Supporting text below the header | 
-| poweredByLogoPath | string | Optional logo for branding | 
-
-## Development
-This component is built using Vite and plain JavaScript for rapid prototyping. TypeScript support is planned as a future enhancement.
-
-## License
-MIT
-
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.

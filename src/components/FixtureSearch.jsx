@@ -5,12 +5,6 @@ import React, { useState,  useEffect} from 'react';
  * A customizable search panel for finding sports fixtures
  */
 
-const mockListings = [
-  { id: 1, name: 'Division 1' },
-  { id: 2, name: 'Division 2' },
-  { id: 3, name: 'Division 3' }
-];
-
 export default function FixtureSearch({
   sport = 'football', ...props
 }) {
@@ -37,7 +31,29 @@ export default function FixtureSearch({
     console.log('Selected listing ID:', e.target.value);
   }
 
-  console.log('Rendering FixtureSearch with listings:', mockListings);
+  function handleSearchClick() {
+    if (!selectedListingId) {
+      console.warn('No division selected');
+      return;
+    }
+
+    // 🧩 Simulate a fetch call — later we’ll replace with real API
+    const url = `/mock/fixtures_${selectedListingId}.json`;
+    console.log('Fetching fixtures from:', url);
+
+    fetch(url)
+      .then(res => {
+        if (!res.ok) throw new Error('Failed to fetch fixtures');
+        return res.json();
+      })
+      .then(data => {
+        console.log('Fetched fixtures:', data);
+        // Optionally set fixtures state here later
+      })
+      .catch(err => console.error('Error fetching fixtures:', err));
+  }
+
+  console.log('Rendering FixtureSearch with listings:', listings);
 
   return (
     <div className="fixture-search" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)', display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '640px', borderRadius: '6px', overflow: 'hidden' }}>
@@ -63,7 +79,7 @@ export default function FixtureSearch({
           ))}
         </select>
 
-        <button className="btn btn-primary" style={{ marginTop: '1rem' }}>
+        <button className="btn btn-primary" style={{ marginTop: '1rem' }} onClick={handleSearchClick}>
           Search
         </button>
       </div>

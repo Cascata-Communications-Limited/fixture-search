@@ -1,0 +1,18 @@
+[
+  {
+    "id": 101,
+    "date": "2025-08-12",
+    "time": "15:00",
+    "homeTeam": "West Hallam Wanderers",
+    "awayTeam": "Derby Dynamo",
+    "venue": "Hallam Stadium"
+  },
+  {
+    "id": 102,
+    "date": "2025-08-19",
+    "time": "14:30",
+    "homeTeam": "Notts United",
+    "awayTeam": "West Hallam Wanderers",
+    "venue": "Trent Park"
+  }
+]

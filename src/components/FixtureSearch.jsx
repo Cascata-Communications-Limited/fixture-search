@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState,  useEffect} from 'react';
 
 /**
  * FixtureSearch Component
  * A customizable search panel for finding sports fixtures
  */
-
 
 const mockListings = [
   { id: 1, name: 'Division 1' },
@@ -12,11 +11,26 @@ const mockListings = [
   { id: 3, name: 'Division 3' }
 ];
 
-
 export default function FixtureSearch({
   sport = 'football', ...props
 }) {
     const [selectedListingId, setSelectedListingId] = useState(null);
+    const [listings, setListings] = useState([]);
+
+    useEffect(() => {
+      fetch('/mock/listings.json')
+        .then(res => {
+          if (!res.ok) throw new Error('Failed to load listings');
+          return res.json();
+        })
+        .then(data => {
+          console.log('Loaded listings:', data);
+          setListings(data);
+        })
+        .catch(err => {
+          console.error('Error fetching listings:', err);
+        });
+    }, []);
 
     function handleSelectionChange(e) {
     setSelectedListingId(parseInt(e.target.value));
@@ -44,7 +58,7 @@ export default function FixtureSearch({
           onChange={handleSelectionChange}
         >
           <option disabled value="">Select a division</option>
-          {mockListings.map(({ id, name }) => (
+          {listings.map(({ id, name }) => (
             <option key={id} value={id}>{name}</option>
           ))}
         </select>

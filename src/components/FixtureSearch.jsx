@@ -14,7 +14,6 @@ export default function FixtureSearch({
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
-
     useEffect(() => {
       fetch('/mock/listings.json')
         .then(res => {
@@ -83,37 +82,41 @@ export default function FixtureSearch({
         <h3>{props.header}</h3>
         <p>{props.strapline}</p>
 
-        <select
-          className="form-select"
-          value={selectedListingId ?? ''}
-          onChange={handleSelectionChange}
-        >
-          <option disabled value="">Select a division</option>
-          {listings.map(({ id, name }) => (
-            <option key={id} value={id}>{name}</option>
-          ))}
-        </select>
+        <div className="d-flex gap-2 align-items-center mb-3">
+            <select
+              className="form-select form-select-sm"
+              value={selectedListingId ?? ''}
+              onChange={handleSelectionChange}
+            >
+              <option disabled value="">Select a division</option>
+              {listings.map(({ id, name }) => (
+                <option key={id} value={id}>{name}</option>
+              ))}
+            </select>
 
-        <button className="btn btn-primary" style={{ marginTop: '1rem' }} onClick={handleSearchClick}>
-          Search
-        </button>
-        
+            <button className="btn btn-primary btn-sm" style={{ marginTop: '1rem' }} onClick={handleSearchClick}>
+              <i className='bi bi-search'></i>Search
+            </button>
+        </div>
         <div className="fixture-results mt-4">
           <div className="fixture-results mt-4">
-            {loading && <p>Loading fixtures...</p>}
+            {loading && <div className="text-muted"><i className="bi bi-hourglass-split"></i> Loading fixtures...</div>}
 
             {error && (
-              <div className="alert alert-warning">
-                {error}
+              <div className="alert alert-warning d-flex align-items-center" role="alert">
+                <i className="bi bi-exclamation-triangle me-2"></i> {error}
               </div>
             )}
 
             {!loading && !error && fixtures.length > 0 && (
               <ul className="list-group">
                 {fixtures.map(f => (
-                  <li key={f.id} className="list-group-item">
-                    <strong>{f.homeTeam}</strong> vs <strong>{f.awayTeam}</strong><br />
-                    {f.date} @ {f.time} — <em>{f.venue}</em>
+                  <li key={f.id} className="list-group-item d-flex justify-content-between align-items-start">
+                    <div>
+                      <strong>{f.homeTeam}</strong> vs <strong>{f.awayTeam}</strong><br />
+                      {f.date} @ {f.time} — <em>{f.venue}</em>
+                    </div>
+                    <i className="bi bi-calendar-event text-secondary"></i>
                   </li>
                 ))}
               </ul>

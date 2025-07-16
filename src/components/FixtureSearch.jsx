@@ -11,6 +11,9 @@ export default function FixtureSearch({
     const [selectedListingId, setSelectedListingId] = useState(null);
     const [listings, setListings] = useState([]);
     const [fixtures, setFixtures] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
+
 
     useEffect(() => {
       fetch('/mock/listings.json')
@@ -42,16 +45,27 @@ export default function FixtureSearch({
     const url = `/mock/fixtures_${selectedListingId}.json`;
     console.log('Fetching fixtures from:', url);
 
+    setLoading(true);
+    setError('');
+    setFixtures([]);
+
     fetch(url)
       .then(res => {
-        if (!res.ok) throw new Error('Failed to fetch fixtures');
+        if (!res.ok) throw new Error(`Failed to fetch fixtures: ${res.status}`);
         return res.json();
       })
       .then(data => {
-        console.log('Fixtures received:', data);
-        setFixtures(data);
+        if (Array.isArray(data) && data.length > 0) {
+          setFixtures(data);
+        } else {
+          setError('No fixtures available for this division.');
+        }
       })
-      .catch(err => console.error('Error fetching fixtures:', err));
+      .catch(err => {
+        console.error('Fixture fetch error:', err);
+        setError('Something went wrong while fetching fixtures.');
+      })
+      .finally(() => setLoading(false));
   }
 
   console.log('Rendering FixtureSearch with listings:', listings);
@@ -83,20 +97,29 @@ export default function FixtureSearch({
         <button className="btn btn-primary" style={{ marginTop: '1rem' }} onClick={handleSearchClick}>
           Search
         </button>
+        
+        <div className="fixture-results mt-4">
           <div className="fixture-results mt-4">
-          {fixtures.length === 0 ? (
-            <p>No fixtures loaded yet.</p>
-          ) : (
-            <ul className="list-group">
-              {fixtures.map(f => (
-                <li key={f.id} className="list-group-item">
-                  <strong>{f.homeTeam}</strong> vs <strong>{f.awayTeam}</strong> <br />
-                  {f.date} @ {f.time} — <em>{f.venue}</em>
-                </li>
-              ))}
-            </ul>
+            {loading && <p>Loading fixtures...</p>}
+
+            {error && (
+              <div className="alert alert-warning">
+                {error}
+              </div>
+            )}
+
+            {!loading && !error && fixtures.length > 0 && (
+              <ul className="list-group">
+                {fixtures.map(f => (
+                  <li key={f.id} className="list-group-item">
+                    <strong>{f.homeTeam}</strong> vs <strong>{f.awayTeam}</strong><br />
+                    {f.date} @ {f.time} — <em>{f.venue}</em>
+                  </li>
+                ))}
+              </ul>
             )}
           </div>
+        </div>
       </div>
 
       {/* Powered By Footer */}

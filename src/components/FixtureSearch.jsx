@@ -10,6 +10,7 @@ export default function FixtureSearch({
 }) {
     const [selectedListingId, setSelectedListingId] = useState(null);
     const [listings, setListings] = useState([]);
+    const [fixtures, setFixtures] = useState([]);
 
     useEffect(() => {
       fetch('/mock/listings.json')
@@ -47,8 +48,8 @@ export default function FixtureSearch({
         return res.json();
       })
       .then(data => {
-        console.log('Fetched fixtures:', data);
-        // Optionally set fixtures state here later
+        console.log('Fixtures received:', data);
+        setFixtures(data);
       })
       .catch(err => console.error('Error fetching fixtures:', err));
   }
@@ -82,6 +83,20 @@ export default function FixtureSearch({
         <button className="btn btn-primary" style={{ marginTop: '1rem' }} onClick={handleSearchClick}>
           Search
         </button>
+          <div className="fixture-results mt-4">
+          {fixtures.length === 0 ? (
+            <p>No fixtures loaded yet.</p>
+          ) : (
+            <ul className="list-group">
+              {fixtures.map(f => (
+                <li key={f.id} className="list-group-item">
+                  <strong>{f.homeTeam}</strong> vs <strong>{f.awayTeam}</strong> <br />
+                  {f.date} @ {f.time} — <em>{f.venue}</em>
+                </li>
+              ))}
+            </ul>
+            )}
+          </div>
       </div>
 
       {/* Powered By Footer */}

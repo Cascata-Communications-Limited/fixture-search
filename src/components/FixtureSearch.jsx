@@ -1,4 +1,5 @@
 import React, { useState,  useEffect} from 'react';
+import { getFixturesByListingId } from '../services/fixtureManagerService';
 
 /**
  * FixtureSearch Component
@@ -48,11 +49,7 @@ export default function FixtureSearch({
     setError('');
     setFixtures([]);
 
-    fetch(url)
-      .then(res => {
-        if (!res.ok) throw new Error(`Failed to fetch fixtures: ${res.status}`);
-        return res.json();
-      })
+    getFixturesByListingId(selectedListingId)
       .then(data => {
         if (Array.isArray(data) && data.length > 0) {
           setFixtures(data);

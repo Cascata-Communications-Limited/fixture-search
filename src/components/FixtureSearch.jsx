@@ -1,5 +1,5 @@
 import React, { useState,  useEffect} from 'react';
-import { getFixturesByListingId } from '../services/fixtureManagerService';
+import { getFixturesByListingId, fetchTeamsByCompetition, getFixtures } from '../services/mockFixtureManagerService.js';
 
 /**
  * FixtureSearch Component
@@ -7,15 +7,44 @@ import { getFixturesByListingId } from '../services/fixtureManagerService';
  */
 
 export default function FixtureSearch({
-  sport = 'football', ...props
+  onFixtureSelected,
+  sport = 'football', 
+  ...props
 }) {
+    const [selectedCompId, setSelectedCompId] = useState('');
+    const [selectedTeamId, setSelectedTeamId] = useState('');
+    const [teams, setTeams] = useState([]);
     const [selectedListingId, setSelectedListingId] = useState(null);
     const [listings, setListings] = useState([]);
     const [fixtures, setFixtures] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
+    useEffect(() => {    
+      fetchDivisionListings();
+    }, []);
+
     useEffect(() => {
+      if (selectedCompId) {
+        fetchTeamsByCompetition(selectedCompId)
+          .then(setTeams)
+          .catch(err => {
+            console.error('Error fetching teams:', err);
+            setTeams([]);
+          });
+
+        setFixtures([]);
+        setSelectedTeamId('');
+      }
+    }, [selectedCompId]);
+
+    useEffect(() => {
+      if (selectedTeamId && selectedCompId) {
+        getFixtures({ teamId: selectedTeamId, competitionId: selectedCompId }).then(setFixtures);
+      }
+    }, [selectedTeamId, selectedCompId]);
+
+    function fetchDivisionListings() {
       fetch('/mock/listings.json')
         .then(res => {
           if (!res.ok) throw new Error('Failed to load listings');
@@ -23,111 +52,77 @@ export default function FixtureSearch({
         })
         .then(data => {
           console.log('Loaded listings:', data);
-          setListings(data);
+          setListings(data); // assuming setListings is scoped appropriately
         })
         .catch(err => {
           console.error('Error fetching listings:', err);
         });
-    }, []);
-
-    function handleSelectionChange(e) {
-    setSelectedListingId(parseInt(e.target.value));
-    console.log('Selected listing ID:', e.target.value);
-  }
-
-  function handleSearchClick() {
-    if (!selectedListingId) {
-      console.warn('No division selected');
-      return;
     }
 
-    // 🧩 Simulate a fetch call — later we’ll replace with real API
-    const url = `/mock/fixtures_${selectedListingId}.json`;
-    console.log('Fetching fixtures from:', url);
+    function handleFixtureClick(e, fixture) {
+      e.preventDefault();
 
-    setLoading(true);
-    setError('');
-    setFixtures([]);
+      if (onFixtureSelected) {
+        onFixtureSelected(fixture);
+      } else {
+        window.location.href = `/trip-planner/${fixture.id}`;
+      }
+    }
 
-    getFixturesByListingId(selectedListingId)
-      .then(data => {
-        if (Array.isArray(data) && data.length > 0) {
-          setFixtures(data);
-        } else {
-          setError('No fixtures available for this division.');
-        }
-      })
-      .catch(err => {
-        console.error('Fixture fetch error:', err);
-        setError('Something went wrong while fetching fixtures.');
-      })
-      .finally(() => setLoading(false));
-  }
+    // setLoading(true);
+    // setError('');
+    // setFixtures([]);
 
-  console.log('Rendering FixtureSearch with listings:', listings);
+   return (
+      <div>
+        <h3>Select Competition</h3>
+        <select value={selectedCompId} onChange={(e) => setSelectedCompId(e.target.value)}>
+          <option value="">-- Select a division --</option>
+          {listings
+            .sort((a, b) => a.order - b.order)
+            .map((d) => (
+              <option key={d.id} value={d.id}>
+                {d.name}
+              </option>
+            ))}
+        </select>
 
-  return (
-    <div className="fixture-search" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)', display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '640px', borderRadius: '6px', overflow: 'hidden' }}>
-      
-      {/* Graphic Pane */}
-      <div style={{ backgroundColor: props.backgroundColor, padding: '1rem', display: 'flex', alignItems: 'center' }}>
-        <img src={props.iconPath} alt={`${sport} icon`} style={{ maxHeight: '48px', opacity: 0.7 }} />
-      </div>
-
-      {/* Control Pane */}
-            <div style={{ padding: '1rem' }}>
-        <h3>{props.header}</h3>
-        <p>{props.strapline}</p>
-
-        <div className="d-flex gap-2 align-items-center mb-3">
-            <select
-              className="form-select form-select-sm"
-              value={selectedListingId ?? ''}
-              onChange={handleSelectionChange}
-            >
-              <option disabled value="">Select a division</option>
-              {listings.map(({ id, name }) => (
-                <option key={id} value={id}>{name}</option>
+        {teams.length > 0 && (
+          <>
+            <h3>Select Team</h3>
+            <select value={selectedTeamId} onChange={(e) => setSelectedTeamId(e.target.value)}>
+              <option value="">-- Select a team --</option>
+              {teams.map((team) => (
+                <option key={team.id} value={team.id}>
+                  {team.name}
+                </option>
               ))}
             </select>
+          </>
+        )}
 
-            <button className="btn btn-primary btn-sm" style={{ marginTop: '1rem' }} onClick={handleSearchClick}>
-              <i className='bi bi-search'></i>Search
-            </button>
-        </div>
-        <div className="fixture-results mt-4">
-          <div className="fixture-results mt-4">
-            {loading && <div className="text-muted"><i className="bi bi-hourglass-split"></i> Loading fixtures...</div>}
+        {fixtures.length > 0 && (
+          <>
+            <h3>Fixtures</h3>
+            <ul>
+              {fixtures.map((f) => (
+                <li key={f.id}>
+                  <a href={`/trip-planner/${f.id}`} onClick={(e) => handleFixtureClick(e, f)}>
+                    {f.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </>
+        )}
 
-            {error && (
-              <div className="alert alert-warning d-flex align-items-center" role="alert">
-                <i className="bi bi-exclamation-triangle me-2"></i> {error}
-              </div>
-            )}
-
-            {!loading && !error && fixtures.length > 0 && (
-              <ul className="list-group">
-                {fixtures.map(f => (
-                  <li key={f.id} className="list-group-item d-flex justify-content-between align-items-start">
-                    <div>
-                      <strong>{f.homeTeam}</strong> vs <strong>{f.awayTeam}</strong><br />
-                      {f.date} @ {f.time} — <em>{f.venue}</em>
-                    </div>
-                    <i className="bi bi-calendar-event text-secondary"></i>
-                  </li>
-                ))}
-              </ul>
-            )}
+          {/* Powered By Footer */}
+        {props.poweredByLogoPath && (
+          <div style={{ padding: '0.5rem', textAlign: 'right', fontSize: '0.75rem', borderTop: '1px solid #eee' }}>
+            Powered by <img src={props.poweredByLogoPath} alt="Powered by logo" style={{ maxHeight: '24px', marginLeft: '8px' }} />
           </div>
-        </div>
-      </div>
+        )}
 
-      {/* Powered By Footer */}
-      {props.poweredByLogoPath && (
-        <div style={{ padding: '0.5rem', textAlign: 'right', fontSize: '0.75rem', borderTop: '1px solid #eee' }}>
-          Powered by <img src={props.poweredByLogoPath} alt="Powered by logo" style={{ maxHeight: '24px', marginLeft: '8px' }} />
-        </div>
-      )}
-    </div>
-  );
+      </div>
+    );
 }

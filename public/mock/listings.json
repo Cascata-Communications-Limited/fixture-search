@@ -1,5 +1,5 @@
 [
-  { "id": 1, "name": "Division 1" },
-  { "id": 2, "name": "Division 2" },
-  { "id": 3, "name": "Division 3" }
+  { "id": 1, "name": "Division 1", "order": 0 },
+  { "id": 2, "name": "Division 2", "order": 1 },
+  { "id": 3, "name": "Division 3", "order": 2 }
 ]

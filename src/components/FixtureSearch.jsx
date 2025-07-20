@@ -1,6 +1,6 @@
 import React, { useState,  useEffect} from 'react';
 import { getFixturesByListingId, fetchTeamsByCompetition, getFixtures } from '../services/fixtureManagerService.js';
-import { formatFixtureDate } from '../utils/formatters.js';
+import FixtureList from './FixtureList.jsx';
 
 /**
  * FixtureSearch Component
@@ -62,7 +62,7 @@ export default function FixtureSearch({
         });
     }
 
-    function handleFixtureClick(e, fixture) {
+    function handleFixtureSelected(e, fixture) {
       e.preventDefault();
 
       if (onFixtureSelected) {
@@ -108,13 +108,7 @@ export default function FixtureSearch({
           <>
             <h3>Fixtures</h3>
             <ul>
-              {fixtures.map((f) => (
-                <li key={f.fixtureId}>
-                  <a href={`/trip-planner/${f.id}`} onClick={(e) => handleFixtureClick(e, f)}>
-                    {`${formatFixtureDate(f.fixtureDate)} ${f.homeTeamName} vs. ${f.awayTeamName} ${f.venue.venueName}`}
-                  </a>
-                </li>
-              ))}
+              <FixtureList fixtures={fixtures} onSelect={handleFixtureSelected} />
             </ul>
           </>
         )}

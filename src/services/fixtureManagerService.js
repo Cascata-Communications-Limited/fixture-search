@@ -1,20 +1,25 @@
-export function getFixtures({ teamId, competitionId }) {
-  // Return dummy fixtures for the selected team
-  return Promise.resolve([
-    { id: 1, name: '2024-08-15 Dragons vs Wolves' },
-    { id: 2, name: '2024-08-21 Dragons vs Eagles' },
-    { id: 3, name: '2024-08-28 Hawks vs Dragons' }
-  ]);
+// const apiUrlRoot = "https://localhost:7181";
+const apiUrlRoot = "https://omnids.co.uk";
+
+const teamsByCompetitionPath = "Listing/teamsbycompetition";
+const fixturesByTeamAndCompetition = "Fixture/listbyteamandcompetition";
+
+export async function fetchDivisionListings() {
+  const res = await fetch('/mock/listings.json');
+  if (!res.ok) throw new Error('Failed to load listings');
+  return res.json();
 }
 
-export function fetchTeamsByCompetition(competitionId) {
-  // Return dummy teams
-  return Promise.resolve([
-    { id: 101, name: 'Dragons' },
-    { id: 102, name: 'Wolves' },
-    { id: 103, name: 'Eagles' },
-    { id: 104, name: 'Hawks' }
-  ]);
+export async function fetchTeamsByCompetition(competitionId) {
+  const res = await fetch(`${apiUrlRoot}/${teamsByCompetitionPath}/${competitionId}`);
+  if (!res.ok) throw new Error('Failed to fetch teams');
+  return res.json();
+}
+
+export async function getFixtures({ teamId, competitionId }) {
+  const res = await fetch(`${apiUrlRoot}/${fixturesByTeamAndCompetition}/${teamId}/${competitionId}`);
+  if (!res.ok) throw new Error('Failed to fetch fixtures');
+  return res.json();
 }
 
 export async function getFixturesByListingId(listingId) {

@@ -1,5 +1,6 @@
 import React, { useState,  useEffect} from 'react';
-import { getFixturesByListingId, fetchTeamsByCompetition, getFixtures } from '../services/mockFixtureManagerService.js';
+import { getFixturesByListingId, fetchTeamsByCompetition, getFixtures } from '../services/fixtureManagerService.js';
+import { formatFixtureDate } from '../utils/formatters.js';
 
 /**
  * FixtureSearch Component
@@ -19,6 +20,8 @@ export default function FixtureSearch({
     const [fixtures, setFixtures] = useState([]);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+
+    const initialListUrl = "/data/football-mens-england-25-26.json";
 
     useEffect(() => {    
       fetchDivisionListings();
@@ -45,7 +48,7 @@ export default function FixtureSearch({
     }, [selectedTeamId, selectedCompId]);
 
     function fetchDivisionListings() {
-      fetch('/mock/listings.json')
+      fetch(initialListUrl)
         .then(res => {
           if (!res.ok) throw new Error('Failed to load listings');
           return res.json();
@@ -106,9 +109,9 @@ export default function FixtureSearch({
             <h3>Fixtures</h3>
             <ul>
               {fixtures.map((f) => (
-                <li key={f.id}>
+                <li key={f.fixtureId}>
                   <a href={`/trip-planner/${f.id}`} onClick={(e) => handleFixtureClick(e, f)}>
-                    {f.name}
+                    {`${formatFixtureDate(f.fixtureDate)} ${f.homeTeamName} vs. ${f.awayTeamName} ${f.venue.venueName}`}
                   </a>
                 </li>
               ))}

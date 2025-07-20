@@ -62,9 +62,7 @@ export default function FixtureSearch({
         });
     }
 
-    function handleFixtureSelected(e, fixture) {
-      e.preventDefault();
-
+    function handleFixtureSelected(fixture) {
       if (onFixtureSelected) {
         onFixtureSelected(fixture);
       } else {

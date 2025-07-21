@@ -1,7 +1,9 @@
 import React from 'react';
 import { formatFixtureDate } from '../utils/formatters.js';
 
-export default function FixtureList({ 
+const fixtureLinkRoot = "https://www.triptab.co.uk/fixture";
+
+ export default function FixtureList({ 
     fixtures = [], 
     onSelect,
     className = '',
@@ -15,13 +17,14 @@ export default function FixtureList({
                 {fixtures.map((f) => (
                     <li key={f.fixtureId}>
                         <a 
-                        href={`/trip-planner/${f.fixtureId}`} 
+                        href={`${fixtureLinkRoot}/${f.fixtureId}`} 
+                        target='_blank'
                         onClick={(e) => {
                                 e.preventDefault();
                             if (onSelect) {
                                 onSelect(f);
                             } else {
-                                window.location.href = `/trip-planner/${f.fixtureId}`;
+                                window.open(`${fixtureLinkRoot}/${f.fixtureId}`, '_blank');
                             }
                         }
                 }

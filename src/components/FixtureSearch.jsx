@@ -22,6 +22,7 @@ export default function FixtureSearch({
     const [error, setError] = useState('');
 
     const initialListUrl = "/data/football-mens-england-25-26.json";
+    const fixtureLinkRoot = "https://www.triptab.co.uk/fixture";
 
     useEffect(() => {    
       fetchDivisionListings();
@@ -66,7 +67,7 @@ export default function FixtureSearch({
       if (onFixtureSelected) {
         onFixtureSelected(fixture);
       } else {
-        window.location.href = `/trip-planner/${fixture.id}`;
+        window.open(`${fixtureLinkRoot}/${fixture.fixtureId}`, '_blank');
       }
     }
 

@@ -8,9 +8,13 @@ import FixtureList from './FixtureList.jsx';
  */
 
 export default function FixtureSearch({
+  iconPath,
+  backgroundColor,
+  sport,
   onFixtureSelected,
-  sport = 'football', 
-  ...props
+  fixtureLinkRoot,
+  formatter,
+  poweredByLogoPath
 }) {
     const [selectedCompId, setSelectedCompId] = useState('');
     const [selectedTeamId, setSelectedTeamId] = useState('');
@@ -75,8 +79,8 @@ export default function FixtureSearch({
    <div className="fixture-search" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)', display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '640px', borderRadius: '6px', overflow: 'hidden' }}>
    
       {/* Graphic Pane */}
-      <div style={{ backgroundColor: props.backgroundColor, padding: '1rem', display: 'flex', alignItems: 'center' }}>
-        <img src={props.iconPath} alt={`${sport} icon`} style={{ maxHeight: '48px', opacity: 0.7 }} />
+      <div style={{ backgroundColor: backgroundColor, padding: '1rem', display: 'flex', alignItems: 'center' }}>
+        <img src={iconPath} alt={`${sport} icon`} style={{ maxHeight: '48px', opacity: 0.7 }} />
       </div>
 
       {/* Control Pane */}
@@ -113,7 +117,8 @@ export default function FixtureSearch({
               <FixtureList 
               fixtures={fixtures} 
               onSelect={onFixtureSelected} 
-              fixtureLinkRoot={props.fixtureLinkRoot}
+              fixtureLinkRoot={fixtureLinkRoot}
+              formatter ={formatter}
               className='fixture-results mt-4'/>
             </ul>
           </>
@@ -128,9 +133,9 @@ export default function FixtureSearch({
          )} */}
 
           {/* Powered By Footer */}
-        {props.poweredByLogoPath && (
+        {poweredByLogoPath && (
           <div style={{ padding: '0.5rem', textAlign: 'right', fontSize: '0.75rem', borderTop: '1px solid #eee' }}>
-            Powered by <img src={props.poweredByLogoPath} alt="Powered by logo" style={{ maxHeight: '24px', marginLeft: '8px' }} />
+            Powered by <img src={poweredByLogoPath} alt="Powered by logo" style={{ maxHeight: '24px', marginLeft: '8px' }} />
           </div>
         )}
         </div>

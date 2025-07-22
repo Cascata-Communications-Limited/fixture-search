@@ -1,6 +1,10 @@
 import FixtureSearch from './components/FixtureSearch';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import { formatFixtureDate } from './utils/formatters';
+
+const fixtureFormatter = (fixture) =>
+  `${formatFixtureDate(fixture.fixtureDate)} ${fixture.homeTeamName} vs. ${fixture.awayTeamName} ${fixture.venue.venueName}`;
 
  const fixtureLinkRoot = "https://www.triptab.co.uk/fixture";``
 
@@ -15,7 +19,11 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
             sport="football"
             onFixtureSelected={handleFixtureSelected}
             className="fixture-search"
-            fixtureLinkRoot = {fixtureLinkRoot} 
+            fixtureLinkRoot = {fixtureLinkRoot}
+            style = ""
+            variant = "compact"
+            formatter = {fixtureFormatter}
+            emptyMessage = "No Fixtures Returned"
           />
         </div>
       );

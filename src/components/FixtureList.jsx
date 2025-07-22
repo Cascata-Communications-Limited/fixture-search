@@ -6,7 +6,11 @@ import { formatFixtureDate } from '../utils/formatters.js';
     onSelect,
     className = '',
     title = 'Fixtures',
-    fixtureLinkRoot}) {
+    fixtureLinkRoot,
+    style,
+    variant,
+    formatter,
+    emptyMessage}) {
     if (!fixtures.length) return null;
 
     return (
@@ -29,7 +33,8 @@ import { formatFixtureDate } from '../utils/formatters.js';
                         }
                 }
                         >
-                        {`${formatFixtureDate(f.fixtureDate)} ${f.homeTeamName} vs. ${f.awayTeamName} ${f.venue.venueName}`}
+                        {formatter ? formatter(f) : f.homeTeamName}
+                        {/* /* {`${formatFixtureDate(f.fixtureDate)} ${f.homeTeamName} vs. ${f.awayTeamName} ${f.venue.venueName}`} */} 
                         </a>
                     </li>
                 ))}

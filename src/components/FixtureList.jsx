@@ -10,11 +10,12 @@ import { formatFixtureDate } from '../utils/formatters.js';
     style,
     variant,
     formatter,
-    emptyMessage}) {
+    emptyMessage,
+    fixtureListStyle}) {
     if (!fixtures.length) return null;
 
     return (
-        <div className={className}>
+        <div className={className} style={fixtureListStyle}>
             <h3>{title}</h3>
             <ul className='list-group'>
                 {fixtures.map((f) => (

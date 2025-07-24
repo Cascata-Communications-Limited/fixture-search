@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchTeamsByCompetition, getFixtures } from '../services/fixtureManagerService.js';
 import FixtureList from './FixtureList.jsx';
+import styles from '../styles/fixtureSearch.module.css';
 
 /**
  * FixtureSearch Component
@@ -8,14 +9,31 @@ import FixtureList from './FixtureList.jsx';
  */
 
 export default function FixtureSearch({
-  iconPath,
-  backgroundColor,
   sport,
+  heading,
+  headingClassName,
+  subHeading,
+  subHeadingClassName,
+  resetClassName,
+  resetPosition,
+  showResetIcon,
+  restText,
   onFixtureSelected,
-  fixtureLinkRoot,
+  className,
+  backgroundColor,
+  style,
+  variant,
   formatter,
+  emptyMessage,
+  onReset,
+  fixtureListStyle,
+  fixtureLinkRoot,
+  iconPath,
+  iconClass,
   poweredByLogoPath,
-  fixtureListStyle
+  showPoweredBy,
+  poweredByText,
+  poweredByClassName
 }) {
   const [selectedCompId, setSelectedCompId] = useState('');
   const [selectedTeamId, setSelectedTeamId] = useState('');
@@ -102,86 +120,104 @@ export default function FixtureSearch({
   }
 
   return (
-    <div className="fixture-search" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)', display: 'flex', flexDirection: 'column', width: '100%', maxWidth: '640px', borderRadius: '6px', overflow: 'hidden' }}>
+    <div className='container'>
+      <div class="tt-search-box d-flex flex-wrap align-items-stretch rounded overflow-hidden">
 
-      {/* Graphic Pane */}
-      <div style={{ backgroundColor: backgroundColor, padding: '1rem', display: 'flex', alignItems: 'center' }}>
-        <img src={iconPath} alt={`${sport} icon`} style={{ maxHeight: '48px', opacity: 0.7 }} />
-      </div>
+        {/* Graphic Pane */}
+        <div
+          className='graphic-pane position-relative d-flex align-items-center justify-content-center text-white'
+          style={{ backgroundColor: backgroundColor }}>
+          <img src={iconPath} alt={`${sport} icon`} className={iconClass} style={{ maxHeight: '48px', opacity: 0.7 }} />
+        </div>
 
-      {/* Control Pane */}
-      <div style={{ padding: '1rem' }}>
-        <div className="d-flex gap-2 align-items-center mb-3">
+        {/* Control Pane */}
+        <div class="tt-control-pane p-3 flex-grow-1">
+          <h2 className={headingClassName}>{heading}</h2>
+          <p className={subHeadingClassName}>{subHeading}</p>
+          <div className="reset-bar mb-2">
+            <a
+              href="#"
+              className={resetClassName ?? "text-muted small d-inline-flex align-items-center"}
+              onClick={(e) => { e.preventDefault(); handleReset(); }}
+            >
+              <i className="bi bi-arrow-counterclockwise me-1" aria-hidden="true"></i>
+              <span className="sr-only">Reset Search</span>
+              <span className="visually-hidden">Reset Search</span>
+            </a>
+          </div>
+          <div className={className}>
 
-          <a href="#" onClick={(e) => { e.preventDefault(); handleReset(); }}>
-            Reset Search
-          </a>
+            {selectedCompId === '' && (
+              <>
+                <select value={selectedCompId} onChange={(e) => setSelectedCompId(e.target.value)} className="form-select form-select-sm">
+                  <option value="">-- Select a division --</option>
+                  {listings
+                    .sort((a, b) => a.order - b.order)
+                    .map((d) => (
+                      <option key={d.id} value={d.id}>
+                        {d.name}
+                      </option>
+                    ))}
+                </select>
+              </>
+            )}
 
-          {selectedCompId === '' && (
-            <>
-              <select value={selectedCompId} onChange={(e) => setSelectedCompId(e.target.value)} className="form-select form-select-sm">
-                <option value="">-- Select a division --</option>
-                {listings
-                  .sort((a, b) => a.order - b.order)
-                  .map((d) => (
-                    <option key={d.id} value={d.id}>
-                      {d.name}
+            {teams.length > 0 && (
+              <>
+                <select value={selectedTeamId} onChange={(e) => setSelectedTeamId(e.target.value)} className="form-select form-select-sm">
+                  <option value="">-- Select a team --</option>
+                  {teams.map((team) => (
+                    <option key={team.id} value={team.id}>
+                      {team.name}
                     </option>
                   ))}
-              </select>
-            </>
-          )}
+                </select>
+              </>
+            )}
 
-          {teams.length > 0 && (
-            <>
-              <select value={selectedTeamId} onChange={(e) => setSelectedTeamId(e.target.value)} className="form-select form-select-sm">
-                <option value="">-- Select a team --</option>
-                {teams.map((team) => (
-                  <option key={team.id} value={team.id}>
-                    {team.name}
-                  </option>
-                ))}
-              </select>
-            </>
-          )}
+            {loading && (
+              <>
+                <div className="text-muted">
+                  <i className="bi bi-hourglass-split"></i> Loading fixtures...
+                </div>
+              </>
+            )}
 
-          {loading && (
-            <>
-              <div className="text-muted">
-                <i className="bi bi-hourglass-split"></i> Loading fixtures...
+            {fixtures.length > 0 && (
+              <>
+                <ul>
+                  <FixtureList
+                    fixtures={fixtures}
+                    onSelect={onFixtureSelected}
+                    fixtureLinkRoot={fixtureLinkRoot}
+                    formatter={formatter}
+                    className='list-group'
+                    fixtureListStyle={fixtureListStyle} />
+                </ul>
+              </>
+            )}
+
+            {/* <a href="#" onClick={(e) => { e.preventDefault(); handleReset(); }} className={resetClassName}>
+          Reset Search
+        </a> */}
+
+            {error && (
+              <>
+                <div className="alert alert-warning d-flex align-items-center" role="alert">
+                  <i className="bi bi-exclamation-triangle me-2"></i> {error}
+                </div>
+              </>
+            )}
+
+            {/* Powered By Footer */}
+            {showPoweredBy && (
+              <div className={poweredByClassName} style={{ padding: '0.5rem', textAlign: 'right', fontSize: '0.75rem', borderTop: '1px solid #eee' }}>
+                {poweredByText ?? "Powered by "}<img src={poweredByLogoPath} alt="Powered by logo" style={{ maxHeight: '24px', marginLeft: '8px' }} />
               </div>
-            </>
-          )}
-
-          {fixtures.length > 0 && (
-            <>
-               <ul>
-                <FixtureList
-                  fixtures={fixtures}
-                  onSelect={onFixtureSelected}
-                  fixtureLinkRoot={fixtureLinkRoot}
-                  formatter={formatter}
-                  className='fixture-results mt-4'
-                  fixtureListStyle={fixtureListStyle} />
-              </ul>
-            </>
-          )}
-
-         {error && (
-             <>
-              <div className="alert alert-warning d-flex align-items-center" role="alert">
-                <i className="bi bi-exclamation-triangle me-2"></i> {error}
-              </div>
-            </>
-          )}
-
-          {/* Powered By Footer */}
-          {poweredByLogoPath && (
-            <div style={{ padding: '0.5rem', textAlign: 'right', fontSize: '0.75rem', borderTop: '1px solid #eee' }}>
-              Powered by <img src={poweredByLogoPath} alt="Powered by logo" style={{ maxHeight: '24px', marginLeft: '8px' }} />
-            </div>
-          )}
+            )}
+          </div>
         </div>
+
       </div>
     </div>
   );

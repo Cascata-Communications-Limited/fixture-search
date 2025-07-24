@@ -22,15 +22,29 @@ function App() {
       <FixtureSearch
         sport="football"
         heading="English Football 2025/26"
+        subHeading="Search for fixtures by team"
         onFixtureSelected={handleFixtureSelected}
-        className="fixture-search"
+        className="p-3 border rounded shadow-sm"
+        backgroundColor='#7BB369'
         fixtureLinkRoot={fixtureLinkRoot}
         style=""
         variant="compact"
         formatter={fixtureFormatter}
-        emptyMessage="No Fixtures Returned"
-        onReset={resetSearch}
+        headingClassName="fs-heading text-primary"
+        subHeadingClassName="text-muted small mb-3"
+        resetClassName="text-muted small mt-2 d-inline-flex align-items-center"
+        resetPosition="above"
+        showResetIcon={true}
+        restText="Reset Search"
+        emptyMessage="No fixtures available."
+        onReset={null}
         fixtureListStyle={{ maxHeight: '30rem', overflowY: 'auto' }}
+        iconPath="/icons8-soccer-ball-50.png"
+        iconClass='tt-sport-icon'
+        poweredByLogoPath="/triptab_logo.png"
+        showPoweredBy={true}
+        poweredByText="Powered by TripTab."
+        poweredByClassName="text-muted small text-center pt-3" 
       />
     </div>
   );

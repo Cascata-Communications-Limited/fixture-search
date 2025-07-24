@@ -16,7 +16,6 @@ import { formatFixtureDate } from '../utils/formatters.js';
 
     return (
         <div className={className} style={fixtureListStyle}>
-            <h3>{title}</h3>
             <ul className='list-group'>
                 {fixtures.map((f) => (
                     <li key={f.fixtureId}>
@@ -34,8 +33,7 @@ import { formatFixtureDate } from '../utils/formatters.js';
                         }
                 }
                         >
-                        {formatter ? formatter(f) : f.homeTeamName}
-                        {/* /* {`${formatFixtureDate(f.fixtureDate)} ${f.homeTeamName} vs. ${f.awayTeamName} ${f.venue.venueName}`} */} 
+                        {formatter ? formatter(f) : f.homeTeamName}                        
                         </a>
                     </li>
                 ))}

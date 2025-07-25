@@ -121,7 +121,7 @@ export default function FixtureSearch({
 
   return (
     <div className='container'>
-      <div class="tt-search-box d-flex flex-wrap align-items-stretch rounded overflow-hidden">
+      <div className={`${styles['tt-search-box']} d-flex flex-wrap align-items-stretch rounded overflow-hidden`}>
 
         {/* Graphic Pane */}
         <div
@@ -130,9 +130,10 @@ export default function FixtureSearch({
           <img src={iconPath} alt={`${sport} icon`} className={iconClass} style={{ maxHeight: '48px', opacity: 0.7 }} />
         </div>
 
+
         {/* Control Pane */}
-        <div class="tt-control-pane p-3 flex-grow-1">
-          <h2 className={headingClassName}>{heading}</h2>
+        <div className={`${styles['tt-control-pane']} p-3 flex-grow-1`}>
+          <h5 className={headingClassName}>{heading}</h5>
           <p className={subHeadingClassName}>{subHeading}</p>
           <div className="reset-bar mb-2">
             <a
@@ -196,10 +197,6 @@ export default function FixtureSearch({
                 </ul>
               </>
             )}
-
-            {/* <a href="#" onClick={(e) => { e.preventDefault(); handleReset(); }} className={resetClassName}>
-          Reset Search
-        </a> */}
 
             {error && (
               <>

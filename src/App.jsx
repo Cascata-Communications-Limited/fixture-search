@@ -38,13 +38,13 @@ function App() {
         restText="Reset Search"
         emptyMessage="No fixtures available."
         onReset={null}
-        fixtureListStyle={{ maxHeight: '30rem', overflowY: 'auto' }}
+        fixtureListStyle={{ maxHeight: '30rem' }}
         iconPath="/icons8-soccer-ball-wh-50.png"
         iconClass='tt-sport-icon'
         poweredByLogoPath="/triptab_logo.png"
         showPoweredBy={true}
-        poweredByText="Powered by TripTab."
-        poweredByClassName="text-muted small text-center pt-3" 
+        poweredByText="Powered by"
+        poweredByClassName="text-muted small pt-3" 
       />
     </div>
   );

@@ -132,72 +132,59 @@ export default function FixtureSearch({
 
 
         {/* Control Pane */}
-        <div className={`${styles['tt-control-pane']} p-3 flex-grow-1`}>
-          <h5 className={headingClassName}>{heading}</h5>
-          <p className={subHeadingClassName}>{subHeading}</p>
-          <div className="reset-bar mb-2">
-            <a
-              href="#"
-              className={resetClassName ?? "text-muted small d-inline-flex align-items-center"}
-              onClick={(e) => { e.preventDefault(); handleReset(); }}
-            >
-              <i className="bi bi-arrow-counterclockwise me-1" aria-hidden="true"></i>
-              <span className="sr-only">Reset Search</span>
-              <span className="visually-hidden">Reset Search</span>
-            </a>
-          </div>
-          <div className={className}>
+        <div className={`${styles['tt-control-pane']} p-3`}>
+          <div className={styles['tt-side-panel']}>
+            <h5 className={headingClassName}>{heading}</h5>
+            <p className={subHeadingClassName}>{subHeading}</p>
+            <div className="reset-bar mb-2">
+              <a
+                href="#"
+                className={resetClassName ?? "text-muted small d-inline-flex align-items-center"}
+                onClick={(e) => { e.preventDefault(); handleReset(); }}
+              >
+                <i className="bi bi-arrow-counterclockwise me-1" aria-hidden="true"></i>
+                <span className="sr-only">Reset Search</span>
+                <span className="visually-hidden">Reset Search</span>
+              </a>
+            </div>
+            <div className={className}>
 
-            {selectedCompId === '' && (
-              <>
-                <select value={selectedCompId} onChange={(e) => setSelectedCompId(e.target.value)} className="form-select form-select-sm">
-                  <option value="">-- Select a division --</option>
-                  {listings
-                    .sort((a, b) => a.order - b.order)
-                    .map((d) => (
-                      <option key={d.id} value={d.id}>
-                        {d.name}
+              {selectedCompId === '' && (
+                <>
+                  <select value={selectedCompId} onChange={(e) => setSelectedCompId(e.target.value)} className="form-select form-select-sm">
+                    <option value="">-- Select a division --</option>
+                    {listings
+                      .sort((a, b) => a.order - b.order)
+                      .map((d) => (
+                        <option key={d.id} value={d.id}>
+                          {d.name}
+                        </option>
+                      ))}
+                  </select>
+                </>
+              )}
+
+              {teams.length > 0 && (
+                <>
+                  <select value={selectedTeamId} onChange={(e) => setSelectedTeamId(e.target.value)} className="form-select form-select-sm">
+                    <option value="">-- Select a team --</option>
+                    {teams.map((team) => (
+                      <option key={team.id} value={team.id}>
+                        {team.name}
                       </option>
                     ))}
-                </select>
-              </>
-            )}
+                  </select>
+                </>
+              )}
 
-            {teams.length > 0 && (
-              <>
-                <select value={selectedTeamId} onChange={(e) => setSelectedTeamId(e.target.value)} className="form-select form-select-sm">
-                  <option value="">-- Select a team --</option>
-                  {teams.map((team) => (
-                    <option key={team.id} value={team.id}>
-                      {team.name}
-                    </option>
-                  ))}
-                </select>
-              </>
-            )}
-
-            {loading && (
-              <>
-                <div className="text-muted">
-                  <i className="bi bi-hourglass-split"></i> Loading fixtures...
-                </div>
-              </>
-            )}
-
-            {fixtures.length > 0 && (
-              <>
-                <ul>
-                  <FixtureList
-                    fixtures={fixtures}
-                    onSelect={onFixtureSelected}
-                    fixtureLinkRoot={fixtureLinkRoot}
-                    formatter={formatter}
-                    className='list-group'
-                    fixtureListStyle={fixtureListStyle} />
-                </ul>
-              </>
-            )}
-
+              {loading && (
+                <>
+                  <div className="text-muted">
+                    <i className="bi bi-hourglass-split"></i> Loading fixtures...
+                  </div>
+                </>
+              )}
+            </div>
             {error && (
               <>
                 <div className="alert alert-warning d-flex align-items-center" role="alert">
@@ -213,8 +200,19 @@ export default function FixtureSearch({
               </div>
             )}
           </div>
+          {fixtures.length > 0 && (
+              <>
+                <FixtureList
+                  fixtures={fixtures}
+                  onSelect={onFixtureSelected}
+                  fixtureLinkRoot={fixtureLinkRoot}
+                  formatter={formatter}
+                  className='list-group'
+                  fixtureListStyle={fixtureListStyle}
+                  fixtureListClassName={styles['tt-fixture-popout']} />
+              </>
+          )}
         </div>
-
       </div>
     </div>
   );

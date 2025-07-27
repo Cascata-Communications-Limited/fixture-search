@@ -1,16 +1,8 @@
-import React from 'react';
-import { formatFixtureDate } from '../utils/formatters.js';
-
  export default function FixtureList({ 
     fixtures = [], 
     onSelect,
-    className = '',
-    title = 'Fixtures',
     fixtureLinkRoot,
-    style,
-    variant,
     formatter,
-    emptyMessage,
     fixtureListStyle,
     fixtureListClassName}) {
     if (!fixtures.length) return null;

@@ -1,12 +1,14 @@
-/* Ensures stable sizing across states */
 .tt-search-box {
+  position: relative;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
   background-color: #fff;
   min-height: 150px;
   max-width: 600px;
+  width: 100%;
   font-size: 0.95rem;
   display: flex;
-  justify-content: space-between;
+  overflow: visible;
+  align-items: flex-start;
 }
 
 .tt-graphic-pane {
@@ -22,7 +24,6 @@
     mix-blend-mode: lighten;
 }
 
-/* Fixture layout container to split control and scroll areas */
 .tt-control-pane {
   display: flex;
   flex-direction: column;
@@ -40,28 +41,30 @@
     opacity: 0.7;
 }
 
-/* Side panel for dropdowns and reset link */
 .tt-side-panel {
   display: flex;
   flex-direction: column;
   min-width: 160px;
+  flex-shrink: 0;
 }
 
 .tt-fixture-popout {
-  position: relative; /* You can switch to absolute if you want true overlay */
+  position: absolute; 
   background-color: #fff;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
   border: 1px solid #ccc;
   border-radius: 0.5rem;
   padding: 0.5rem;
-  margin-top: -1rem; /* Pull it up visually into the control area */
-  margin-left: 1rem;  /* Float it outward to the right */
+  margin-top: -1rem; 
+  margin-left: 1rem; 
   max-height: 20rem;
   overflow-y: auto;
+  top: 60%;
+  left: 10;
+  transform: translateY(-1rem);
   z-index: 10;
 }
 
-/* Scrollable fixture area */
 .tt-fixture-scroll-area {
   position: relative;
   background-color: #fff;
@@ -71,10 +74,9 @@
   margin-top: 0.5rem;
   max-height: 30rem;
   overflow-y: auto;
-  z-index: 1; /* subtle layer bump without breaking stacking context */
+  z-index: 1; 
 }
 
-/* Optional: Fade-in animation to prevent FOUC */
 .tt-search-box {
   visibility: hidden;
   animation: fadeIn 100ms ease-in forwards;
@@ -84,6 +86,11 @@
 .tt-control-pane h5,
 .tt-control-pane p {
   margin-bottom: 0.5rem;
+}
+
+.select-container select {
+  opacity: 0;
+  animation: fadeIn 150ms ease-in forwards;
 }
 
 @keyframes fadeIn {

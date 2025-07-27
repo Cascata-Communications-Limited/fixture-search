@@ -15,16 +15,10 @@ export default function FixtureSearch({
   subHeading,
   subHeadingClassName,
   resetClassName,
-  resetPosition,
-  showResetIcon,
-  restText,
   onFixtureSelected,
   className,
   backgroundColor,
-  style,
-  variant,
   formatter,
-  emptyMessage,
   onReset,
   fixtureListStyle,
   fixtureLinkRoot,
@@ -94,7 +88,7 @@ export default function FixtureSearch({
       })
       .then(data => {
         console.log('Loaded listings:', data);
-        setListings(data); // assuming setListings is scoped appropriately
+        setListings(data); 
       })
       .catch(err => {
         console.error('Error fetching listings:', err);
@@ -113,11 +107,13 @@ export default function FixtureSearch({
 
   const handleReset = () => {
     if (typeof onReset === 'function') {
-      onReset(); // External control
+      onReset(); 
     } else {
-      resetSearch(); // Internal fallback
+      resetSearch(); 
     }
   }
+
+  className = styles['select-container']; 
 
   return (
     <div className='container'>
@@ -129,7 +125,6 @@ export default function FixtureSearch({
           style={{ backgroundColor: backgroundColor }}>
           <img src={iconPath} alt={`${sport} icon`} className={iconClass} style={{ maxHeight: '48px', opacity: 0.7 }} />
         </div>
-
 
         {/* Control Pane */}
         <div className={`${styles['tt-control-pane']} p-3`}>
@@ -168,7 +163,9 @@ export default function FixtureSearch({
                 <>
                   <select value={selectedTeamId} onChange={(e) => setSelectedTeamId(e.target.value)} className="form-select form-select-sm">
                     <option value="">-- Select a team --</option>
-                    {teams.map((team) => (
+                    {teams
+                    .sort((a, b) => a.name.localeCompare(b.name))
+                    .map((team) => (
                       <option key={team.id} value={team.id}>
                         {team.name}
                       </option>
@@ -176,15 +173,15 @@ export default function FixtureSearch({
                   </select>
                 </>
               )}
-
-              {loading && (
-                <>
-                  <div className="text-muted">
-                    <i className="bi bi-hourglass-split"></i> Loading fixtures...
-                  </div>
-                </>
-              )}
             </div>
+
+            {loading && (
+              <>
+                <div className="text-muted">
+                  <i className="bi bi-hourglass-split"></i> Loading fixtures...
+                </div>
+              </>
+            )}
             {error && (
               <>
                 <div className="alert alert-warning d-flex align-items-center" role="alert">
@@ -193,26 +190,28 @@ export default function FixtureSearch({
               </>
             )}
           </div>
-          {fixtures.length > 0 && (
-              <>
-                <FixtureList
-                  fixtures={fixtures}
-                  onSelect={onFixtureSelected}
-                  fixtureLinkRoot={fixtureLinkRoot}
-                  formatter={formatter}
-                  className='list-group'
-                  fixtureListStyle={fixtureListStyle}
-                  fixtureListClassName={styles['tt-fixture-popout']} />
-              </>
+
+          {/* Powered By Footer */}
+          {showPoweredBy && (
+            <div className={poweredByClassName} style={{ padding: '0.5rem', textAlign: 'right', fontSize: '0.75rem', borderTop: '1px solid #eee' }}>
+              {poweredByText ?? "Powered by "}<img src={poweredByLogoPath} alt="Powered by logo" style={{ maxHeight: '24px', marginLeft: '8px' }} />
+            </div>
           )}
-            {/* Powered By Footer */}
-            {showPoweredBy && (
-              <div className={poweredByClassName} style={{ padding: '0.5rem', textAlign: 'right', fontSize: '0.75rem', borderTop: '1px solid #eee' }}>
-                {poweredByText ?? "Powered by "}<img src={poweredByLogoPath} alt="Powered by logo" style={{ maxHeight: '24px', marginLeft: '8px' }} />
-              </div>
-            )}
         </div>
       </div>
+      {fixtures.length > 0 && (
+        <>
+          <FixtureList
+            fixtures={fixtures}
+            onSelect={onFixtureSelected}
+            fixtureLinkRoot={fixtureLinkRoot}
+            formatter={formatter}
+            className='list-group'
+            fixtureListStyle={fixtureListStyle}
+            fixtureListClassName={styles['tt-fixture-popout']} />
+        </>
+      )}
+
     </div>
   );
 }

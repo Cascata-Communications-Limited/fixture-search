@@ -192,13 +192,6 @@ export default function FixtureSearch({
                 </div>
               </>
             )}
-
-            {/* Powered By Footer */}
-            {showPoweredBy && (
-              <div className={poweredByClassName} style={{ padding: '0.5rem', textAlign: 'right', fontSize: '0.75rem', borderTop: '1px solid #eee' }}>
-                {poweredByText ?? "Powered by "}<img src={poweredByLogoPath} alt="Powered by logo" style={{ maxHeight: '24px', marginLeft: '8px' }} />
-              </div>
-            )}
           </div>
           {fixtures.length > 0 && (
               <>
@@ -212,6 +205,12 @@ export default function FixtureSearch({
                   fixtureListClassName={styles['tt-fixture-popout']} />
               </>
           )}
+            {/* Powered By Footer */}
+            {showPoweredBy && (
+              <div className={poweredByClassName} style={{ padding: '0.5rem', textAlign: 'right', fontSize: '0.75rem', borderTop: '1px solid #eee' }}>
+                {poweredByText ?? "Powered by "}<img src={poweredByLogoPath} alt="Powered by logo" style={{ maxHeight: '24px', marginLeft: '8px' }} />
+              </div>
+            )}
         </div>
       </div>
     </div>

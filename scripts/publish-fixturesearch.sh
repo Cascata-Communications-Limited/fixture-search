@@ -16,7 +16,7 @@ echo "🧪 Local install test..."
 npm install ./$(npm pack --json | jq -r '.[0].filename') --no-save
 
 echo "🚀 Publishing to NPM..."
-npm publish --access public
+npm publish --access public --verbose
 
 echo "✅ Publish complete. Don’t forget to push tags if needed:"
 echo "    git tag v1.0.0 && git push origin --tags"

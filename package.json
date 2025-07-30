@@ -1,6 +1,6 @@
 {
-  "name": "@cascata/fixture-search",
-  "private": true,
+  "name": "fixture-search",
+  "private": false,
   "version": "1.0.0",
   "type": "module",
   "description": "React component for sports fixture lookup",

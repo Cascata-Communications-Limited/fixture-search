@@ -11,9 +11,9 @@
 Note: FixtureSearch is currently zero-config. All settings are managed internally for streamlined integration. Configurable props coming soon.
 
 <!-- TODO: Replace badge paths once NPM entry is live -->
-![Version](https://img.shields.io/npm/v/@your-scope/fixture-search.svg)
-![License](https://img.shields.io/npm/l/@your-scope/fixture-search.svg)
-![Build](https://img.shields.io/github/actions/workflow/status/your-org/fixture-search/main.yml)
+![Version](https://img.shields.io/npm/v/fixture-search.svg)
+![License](https://img.shields.io/npm/l/fixture-search.svg)
+![Build](https://img.shields.io/github/actions/workflows/status/Cascata-Communications-Limited/fixture-search/ci.yml)
 
 ## Component Purpose and Key Features
 
